@@ -35,10 +35,10 @@ class StoryItem {
   /// The page content
   final Widget view;
   StoryItem(
-    this.view, {
-    required this.duration,
-    this.shown = false,
-  });
+      this.view, {
+        required this.duration,
+        this.shown = false,
+      });
 
   /// Short hand to create text-only page.
   ///
@@ -87,8 +87,8 @@ class StoryItem {
           child: Text(
             title,
             style: textStyle?.copyWith(
-                  color: contrast > 1.8 ? Colors.white : Colors.black,
-                ) ??
+              color: contrast > 1.8 ? Colors.white : Colors.black,
+            ) ??
                 TextStyle(
                   color: contrast > 1.8 ? Colors.white : Colors.black,
                   fontSize: 18,
@@ -219,17 +219,17 @@ class StoryItem {
   /// Shorthand for creating page video. [controller] should be same instance as
   /// one passed to the `StoryView`
   factory StoryItem.pageVideo(
-    String url, {
-    required StoryController controller,
-    Key? key,
-    Duration? duration,
-    BoxFit imageFit = BoxFit.fitWidth,
-    Widget? caption,
-    bool shown = false,
-    Map<String, dynamic>? requestHeaders,
-    Widget? loadingWidget,
-    Widget? errorWidget,
-  }) {
+      String url, {
+        required StoryController controller,
+        Key? key,
+        Duration? duration,
+        BoxFit imageFit = BoxFit.fitWidth,
+        Widget? caption,
+        bool shown = false,
+        Map<String, dynamic>? requestHeaders,
+        Widget? loadingWidget,
+        Widget? errorWidget,
+      }) {
     return StoryItem(
         Container(
           key: key,
@@ -251,7 +251,7 @@ class StoryItem {
                     margin: EdgeInsets.only(bottom: 24),
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                     color:
-                        caption != null ? Colors.black54 : Colors.transparent,
+                    caption != null ? Colors.black54 : Colors.transparent,
                     child: caption?? const SizedBox.shrink(),
                   ),
                 ),
@@ -267,13 +267,13 @@ class StoryItem {
   /// or `NetworkImage`. However, the story continues to play while the image loads
   /// up.
   factory StoryItem.pageProviderImage(
-    ImageProvider image, {
-    Key? key,
-    BoxFit imageFit = BoxFit.fitWidth,
-    String? caption,
-    bool shown = false,
-    Duration? duration,
-  }) {
+      ImageProvider image, {
+        Key? key,
+        BoxFit imageFit = BoxFit.fitWidth,
+        String? caption,
+        bool shown = false,
+        Duration? duration,
+      }) {
     return StoryItem(
         Container(
           key: key,
@@ -301,16 +301,16 @@ class StoryItem {
                       vertical: 8,
                     ),
                     color:
-                        caption != null ? Colors.black54 : Colors.transparent,
+                    caption != null ? Colors.black54 : Colors.transparent,
                     child: caption != null
                         ? Text(
-                            caption,
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                            ),
-                            textAlign: TextAlign.center,
-                          )
+                      caption,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
                         : SizedBox.shrink(),
                   ),
                 ),
@@ -326,14 +326,14 @@ class StoryItem {
   /// or `NetworkImage`. However, the story continues to play while the image loads
   /// up.
   factory StoryItem.inlineProviderImage(
-    ImageProvider image, {
-    Key? key,
-    Text? caption,
-    bool shown = false,
-    bool roundedTop = true,
-    bool roundedBottom = false,
-    Duration? duration,
-  }) {
+      ImageProvider image, {
+        Key? key,
+        Text? caption,
+        bool shown = false,
+        bool roundedTop = true,
+        bool roundedBottom = false,
+        Duration? duration,
+      }) {
     return StoryItem(
       Container(
         key: key,
@@ -475,28 +475,28 @@ class StoryViewState extends State<StoryView> with TickerProviderStateMixin {
 
     this._playbackSubscription =
         widget.controller.playbackNotifier.listen((playbackStatus) {
-      switch (playbackStatus) {
-        case PlaybackState.play:
-          _removeNextHold();
-          this._animationController?.forward();
-          break;
+          switch (playbackStatus) {
+            case PlaybackState.play:
+              _removeNextHold();
+              this._animationController?.forward();
+              break;
 
-        case PlaybackState.pause:
-          _holdNext(); // then pause animation
-          this._animationController?.stop(canceled: false);
-          break;
+            case PlaybackState.pause:
+              _holdNext(); // then pause animation
+              this._animationController?.stop(canceled: false);
+              break;
 
-        case PlaybackState.next:
-          _removeNextHold();
-          _goForward();
-          break;
+            case PlaybackState.next:
+              _removeNextHold();
+              _goForward();
+              break;
 
-        case PlaybackState.previous:
-          _removeNextHold();
-          _goBack();
-          break;
-      }
-    });
+            case PlaybackState.previous:
+              _removeNextHold();
+              _goBack();
+              break;
+          }
+        });
 
     _play();
   }
@@ -680,37 +680,37 @@ class StoryViewState extends State<StoryView> with TickerProviderStateMixin {
                 onVerticalDragStart: widget.onVerticalSwipeComplete == null
                     ? null
                     : (details) {
-                        widget.controller.pause();
-                      },
+                  widget.controller.pause();
+                },
                 onVerticalDragCancel: widget.onVerticalSwipeComplete == null
                     ? null
                     : () {
-                        widget.controller.play();
-                      },
+                  widget.controller.play();
+                },
                 onVerticalDragUpdate: widget.onVerticalSwipeComplete == null
                     ? null
                     : (details) {
-                        if (verticalDragInfo == null) {
-                          verticalDragInfo = VerticalDragInfo();
-                        }
+                  if (verticalDragInfo == null) {
+                    verticalDragInfo = VerticalDragInfo();
+                  }
 
-                        verticalDragInfo!.update(details.primaryDelta!);
+                  verticalDragInfo!.update(details.primaryDelta!);
 
-                        // TODO: provide callback interface for animation purposes
-                      },
+                  // TODO: provide callback interface for animation purposes
+                },
                 onVerticalDragEnd: widget.onVerticalSwipeComplete == null
                     ? null
                     : (details) {
-                        widget.controller.play();
-                        // finish up drag cycle
-                        if (!verticalDragInfo!.cancel &&
-                            widget.onVerticalSwipeComplete != null) {
-                          widget.onVerticalSwipeComplete!(
-                              verticalDragInfo!.direction);
-                        }
+                  widget.controller.play();
+                  // finish up drag cycle
+                  if (!verticalDragInfo!.cancel &&
+                      widget.onVerticalSwipeComplete != null) {
+                    widget.onVerticalSwipeComplete!(
+                        verticalDragInfo!.direction);
+                  }
 
-                        verticalDragInfo = null;
-                      },
+                  verticalDragInfo = null;
+                },
               )),
           Align(
             alignment: Alignment.centerLeft,
@@ -746,13 +746,13 @@ class PageBar extends StatefulWidget {
   final Color? indicatorForegroundColor;
 
   PageBar(
-    this.pages,
-    this.animation, {
-    this.indicatorHeight = IndicatorHeight.large,
-    this.indicatorColor,
-    this.indicatorForegroundColor,
-    Key? key,
-  }) : super(key: key);
+      this.pages,
+      this.animation, {
+        this.indicatorHeight = IndicatorHeight.large,
+        this.indicatorColor,
+        this.indicatorForegroundColor,
+        Key? key,
+      }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -788,23 +788,14 @@ class PageBarState extends State<PageBar> {
 
   @override
   Widget build(BuildContext context) {
-    final isRTL = Directionality.of(context) == TextDirection.rtl;
-
-    // عكس الـ list في RTL
-    final displayPages = isRTL ? widget.pages.reversed.toList() : widget.pages;
-
     return Row(
-      children: List.generate(displayPages.length, (index) {
-        final page = displayPages[index];
-        final isLastIndicator = index == displayPages.length - 1;
-
+      children: widget.pages.map((it) {
         return Expanded(
           child: Container(
-            margin: EdgeInsets.only(
-              right: !isLastIndicator ? this.spacing : 0,
-            ),
+            padding: EdgeInsets.only(
+                right: widget.pages.last == it ? 0 : this.spacing),
             child: StoryProgressIndicator(
-              isPlaying(page) ? widget.animation!.value : (page.shown ? 1 : 0),
+              isPlaying(it) ? widget.animation!.value : (it.shown ? 1 : 0),
               indicatorHeight:
               widget.indicatorHeight == IndicatorHeight.large ? 5 : widget.indicatorHeight == IndicatorHeight.medium ? 3 : 2,
               indicatorColor: widget.indicatorColor,
@@ -812,7 +803,7 @@ class PageBarState extends State<PageBar> {
             ),
           ),
         );
-      }),
+      }).toList(),
     );
   }
 }
@@ -827,14 +818,16 @@ class StoryProgressIndicator extends StatelessWidget {
   final Color? indicatorForegroundColor;
 
   StoryProgressIndicator(
-    this.value, {
-    this.indicatorHeight = 5,
-    this.indicatorColor,
-    this.indicatorForegroundColor,
-  });
+      this.value, {
+        this.indicatorHeight = 5,
+        this.indicatorColor,
+        this.indicatorForegroundColor,
+      });
 
   @override
   Widget build(BuildContext context) {
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return CustomPaint(
       size: Size.fromHeight(
         this.indicatorHeight,
@@ -842,10 +835,12 @@ class StoryProgressIndicator extends StatelessWidget {
       foregroundPainter: IndicatorOval(
         this.indicatorForegroundColor?? Colors.white.withValues(alpha: 0.8),
         this.value,
+        isRTL: isRTL,
       ),
       painter: IndicatorOval(
         this.indicatorColor?? Colors.white.withValues(alpha: 0.4),
         1.0,
+        isRTL: isRTL,
       ),
     );
   }
@@ -854,15 +849,21 @@ class StoryProgressIndicator extends StatelessWidget {
 class IndicatorOval extends CustomPainter {
   final Color color;
   final double widthFactor;
+  final bool isRTL;
 
-  IndicatorOval(this.color, this.widthFactor);
+  IndicatorOval(this.color, this.widthFactor, {this.isRTL = false});
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = this.color;
+
+    // احسب الموضع حسب الاتجاه
+    final width = size.width * this.widthFactor;
+    final left = isRTL ? size.width - width : 0.0;
+
     canvas.drawRRect(
         RRect.fromRectAndRadius(
-            Rect.fromLTWH(0, 0, size.width * this.widthFactor, size.height),
+            Rect.fromLTWH(left, 0, width, size.height),
             Radius.circular(3)),
         paint);
   }
