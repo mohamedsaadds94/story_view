@@ -788,12 +788,17 @@ class PageBarState extends State<PageBar> {
 
   @override
   Widget build(BuildContext context) {
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
+    // ⭐ عكس الـ pages في RTL
+    final displayPages = isRTL ? widget.pages.reversed.toList() : widget.pages;
+
     return Row(
-      children: widget.pages.map((it) {
+      children: displayPages.map((it) {
         return Expanded(
           child: Container(
             padding: EdgeInsets.only(
-                right: widget.pages.last == it ? 0 : this.spacing),
+                right: displayPages.last == it ? 0 : this.spacing),
             child: StoryProgressIndicator(
               isPlaying(it) ? widget.animation!.value : (it.shown ? 1 : 0),
               indicatorHeight:
