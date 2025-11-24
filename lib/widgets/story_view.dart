@@ -761,7 +761,7 @@ class PageBar extends StatefulWidget {
 }
 
 class PageBarState extends State<PageBar> {
-  double spacing = 8;
+  double spacing = 4;
 
   @override
   void initState() {
@@ -791,18 +791,16 @@ class PageBarState extends State<PageBar> {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
 
     return Row(
-      children: widget.pages.asMap().entries.map((entry) {
-        final index = entry.key;
-        final page = entry.value;
-        final isLastIndicator = index == widget.pages.length - 1;
-
+      children: widget.pages.map((it) {  // ⭐ استخدم widget.pages مش displayPages
         return Expanded(
           child: Container(
-            margin: EdgeInsets.only(
-              right: !isLastIndicator ? this.spacing : 0,  // ⭐ مسافة على اليمين دايمًا
+            padding: EdgeInsets.only(
+                right: widget.pages.last == it ? 0 : this.spacing,
+                left: widget.pages.last == it ? 0 : this.spacing
+
             ),
             child: StoryProgressIndicator(
-              isPlaying(page) ? widget.animation!.value : (page.shown ? 1 : 0),
+              isPlaying(it) ? widget.animation!.value : (it.shown ? 1 : 0),
               indicatorHeight:
               widget.indicatorHeight == IndicatorHeight.large ? 5 : widget.indicatorHeight == IndicatorHeight.medium ? 3 : 2,
               indicatorColor: widget.indicatorColor,
