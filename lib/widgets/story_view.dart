@@ -788,23 +788,31 @@ class PageBarState extends State<PageBar> {
 
   @override
   Widget build(BuildContext context) {
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
+    // عكس الـ list في RTL
+    final displayPages = isRTL ? widget.pages.reversed.toList() : widget.pages;
+
     return Row(
-      textDirection: Directionality.of(context),
-      children: widget.pages.map((it) {
+      children: List.generate(displayPages.length, (index) {
+        final page = displayPages[index];
+        final isLastIndicator = index == displayPages.length - 1;
+
         return Expanded(
           child: Container(
-            padding: EdgeInsets.only(
-                right: widget.pages.last == it ? 0 : this.spacing),
+            margin: EdgeInsets.only(
+              right: !isLastIndicator ? this.spacing : 0,
+            ),
             child: StoryProgressIndicator(
-              isPlaying(it) ? widget.animation!.value : (it.shown ? 1 : 0),
+              isPlaying(page) ? widget.animation!.value : (page.shown ? 1 : 0),
               indicatorHeight:
-                  widget.indicatorHeight == IndicatorHeight.large ? 5 : widget.indicatorHeight == IndicatorHeight.medium ? 3 : 2,
+              widget.indicatorHeight == IndicatorHeight.large ? 5 : widget.indicatorHeight == IndicatorHeight.medium ? 3 : 2,
               indicatorColor: widget.indicatorColor,
               indicatorForegroundColor: widget.indicatorForegroundColor,
             ),
           ),
         );
-      }).toList(),
+      }),
     );
   }
 }
