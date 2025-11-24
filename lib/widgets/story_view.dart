@@ -791,13 +791,19 @@ class PageBarState extends State<PageBar> {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
 
     return Row(
-      children: widget.pages.map((it) {  // ⭐ استخدم widget.pages مش displayPages
+      children: widget.pages.asMap().entries.map((entry) {
+        final index = entry.key;
+        final page = entry.value;
+        final isLastIndicator = index == widget.pages.length - 1;
+
         return Expanded(
           child: Container(
             padding: EdgeInsets.only(
-                right: widget.pages.last == it ? 0 : this.spacing),
+              left: isRTL && !isLastIndicator ? this.spacing : 0,  // ⭐ مسافة يسار في RTL
+              right: !isRTL && !isLastIndicator ? this.spacing : 0, // ⭐ مسافة يمين في LTR
+            ),
             child: StoryProgressIndicator(
-              isPlaying(it) ? widget.animation!.value : (it.shown ? 1 : 0),
+              isPlaying(page) ? widget.animation!.value : (page.shown ? 1 : 0),
               indicatorHeight:
               widget.indicatorHeight == IndicatorHeight.large ? 5 : widget.indicatorHeight == IndicatorHeight.medium ? 3 : 2,
               indicatorColor: widget.indicatorColor,
