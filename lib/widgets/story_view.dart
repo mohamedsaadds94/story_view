@@ -761,7 +761,7 @@ class PageBar extends StatefulWidget {
 }
 
 class PageBarState extends State<PageBar> {
-  double spacing = 4;
+  double spacing = 8;
 
   @override
   void initState() {
@@ -798,9 +798,8 @@ class PageBarState extends State<PageBar> {
 
         return Expanded(
           child: Container(
-            padding: EdgeInsets.only(
-              left: isRTL && !isLastIndicator ? this.spacing : 0,  // ⭐ مسافة يسار في RTL
-              right: !isRTL && !isLastIndicator ? this.spacing : 0, // ⭐ مسافة يمين في LTR
+            margin: EdgeInsets.only(
+              right: !isLastIndicator ? this.spacing : 0,  // ⭐ مسافة على اليمين دايمًا
             ),
             child: StoryProgressIndicator(
               isPlaying(page) ? widget.animation!.value : (page.shown ? 1 : 0),
