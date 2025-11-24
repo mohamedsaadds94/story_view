@@ -789,6 +789,7 @@ class PageBarState extends State<PageBar> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      textDirection: Directionality.of(context),
       children: widget.pages.map((it) {
         return Expanded(
           child: Container(
