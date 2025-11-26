@@ -660,7 +660,9 @@ class StoryViewState extends State<StoryView> with TickerProviderStateMixin {
             ),
           ),
           Align(
-              alignment: Alignment.centerRight,
+              alignment: Directionality.of(context) == TextDirection.rtl
+                  ? Alignment.centerLeft   // ⭐ في العربي، التقديم من الشمال
+                  : Alignment.centerRight,
               heightFactor: 1,
               child: GestureDetector(
                 onTapDown: (details) {
@@ -712,15 +714,17 @@ class StoryViewState extends State<StoryView> with TickerProviderStateMixin {
                         verticalDragInfo = null;
                       },
               )),
-          Align(
-            alignment: Alignment.centerLeft,
-            heightFactor: 1,
-            child: SizedBox(
-                child: GestureDetector(onTap: () {
-                  widget.controller.previous();
-                }),
-                width: 70),
-          ),
+        Align(
+          alignment: Directionality.of(context) == TextDirection.rtl
+              ? Alignment.centerRight  // ⭐ في العربي، الرجوع من اليمين
+              : Alignment.centerLeft,   // في الإنجليزي، الرجوع من الشمال
+          heightFactor: 1,
+          child: SizedBox(
+              child: GestureDetector(onTap: () {
+                widget.controller.previous();
+              }),
+              width: 70),
+        ),
         ],
       ),
     );
